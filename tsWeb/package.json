@@ -1,0 +1,34 @@
+{
+    "name": "tsweb",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon ./dist/index.js"
+    },
+    "author": "Rouzip",
+    "license": "ISC",
+    "dependencies": {
+        "@types/busboy": "^0.2.3",
+        "@types/ejs": "^2.5.1",
+        "@types/koa": "^2.0.45",
+        "@types/koa-bodyparser": "^4.2.0",
+        "@types/koa-logger": "^3.1.0",
+        "@types/koa-router": "^7.0.27",
+        "@types/koa-views": "^2.0.3",
+        "@types/sequelize": "^4.27.14",
+        "busboy": "^0.2.14",
+        "ejs": "^2.5.8",
+        "eslint": "^4.19.1",
+        "koa": "^2.5.0",
+        "koa-body": "^2.5.0",
+        "koa-bodyparser": "^4.2.0",
+        "koa-logger": "^3.2.0",
+        "koa-router": "^7.4.0",
+        "koa-views": "^6.1.4",
+        "mysql2": "^1.5.3",
+        "nodemon": "^1.17.3",
+        "sequelize": "^4.37.6"
+    }
+}
