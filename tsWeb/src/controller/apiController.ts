@@ -52,11 +52,16 @@ export async function modifyInfo(ctx: Context) {
   }
 }
 
-let num:number = 0;
+let num: number = 0;
 export function viewPeopleNum(ctx: Context) {
   num++;
   console.log('浏览人数', num)
   ctx.response.body = {
     'people': num
   }
+}
+
+export async function getPic(ctx: Context) {
+  let req = ctx.request
+  console.log(req)
 }

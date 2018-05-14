@@ -1,6 +1,6 @@
 import koaBody from "koa-body";
 import Router from "koa-router";
-import { reNamePic, teacherInfos, viewPeopleNum } from "../controller/apiController";
+import { reNamePic, teacherInfos, viewPeopleNum, getPic } from "../controller/apiController";
 
 
 const router = new Router();
@@ -19,5 +19,6 @@ router.post(
 );
 router.get("/teachers", teacherInfos);
 router.get("/peoples", viewPeopleNum);
+router.get('/photos/:name', getPic);
 
 export { router };

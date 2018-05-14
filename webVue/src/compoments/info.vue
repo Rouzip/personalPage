@@ -8,8 +8,14 @@
                         interval='1000'>
       </el-carousel-item>
     </el-carousel>
-    <div class="pictures" v-for="teacher in this.$store.state.teachers" :key="teacher.id">
-      <img src="" alt="教师图片" class="avatar">
+    <div class="middle-box">
+      <div class="pictures" v-for="teacher in this.$store.state.teachers" :key="teacher.id">
+        <a> </a>
+        <span> </span>
+        <span> </span>
+        <button @click="picGet(teacher.picture)"></button>
+        <img src="" alt="教师图片" class="avatar">
+      </div>
     </div>
   </div>
 </template>
@@ -18,7 +24,7 @@ export default {
   name: "mainBanner",
   data: function() {
     return {
-      pictures: []
+      pictures: [0, 1, 2]
     };
   },
   methods: {
@@ -29,6 +35,10 @@ export default {
         "background-size": "100% 100%",
         "background-repeat": "no-repeat"
       };
+    },
+    picGet: async function(name) {
+      let res = await this.$http.get('/api/photos/'+name)
+      photo = res.data.image
     }
   }
 };
@@ -40,7 +50,13 @@ export default {
 .pictures{
   position: fixed;
 }
-.avatar{
-
+.middle-box {
+  display: flex;
+  z-index: 10000;
+  position: fixed;
+  top: 35%;
+  height: 200px;
+  width: 100%;
+  background: #333333;
 }
 </style>
