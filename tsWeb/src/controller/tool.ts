@@ -2,7 +2,6 @@ import fs from "fs";
 import db from "../model";
 import { UserInstance } from "../model/model";
 
-
 /**
  * 自定义函数创建uuid
  */
@@ -75,3 +74,17 @@ export async function reName(file: any, id: string): Promise<void> {
   });
 }
 
+/**
+ * 异步获取图片并返回
+ * @param name 存储位置中相片名字
+ */
+export async function loadPic(name: string) {
+  let paths = __dirname + "/../../static/";
+  console.log(paths);
+  fs.readFile(paths + name, "utf-8", (err, data) => {
+    console.log(err)
+    if (data !== undefined){
+      
+    }
+  });
+}

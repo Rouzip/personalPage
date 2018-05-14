@@ -63,19 +63,16 @@ tsWeb/.vscode
 tsWeb/tsWeb.code-workspace
 # ouput
 tsWeb/dist/
+# static file
+tsWeb/static
+tsweb/src/static
 # sql data
 tsWeb/src/model/test.sql
-<<<<<<< HEAD
 # config
 tsWeb/src/config
 
 # 前端部分
 .DS_Store
-=======
-
-# 前端部分
-webVue/.DS_Store
->>>>>>> 02fe880aad574e7792a35462283c82fc6735ba2a
 webVue/node_modules/
 webVue/dist/
 webVue/npm-debug.log
@@ -87,9 +84,6 @@ webVue/*.suo
 webVue/*.ntvs*
 webVue/*.njsproj
 webVue/*.sln
-<<<<<<< HEAD
 webVue/*.editorconfig
 webVue/src/assets
-=======
-webVue/*.editorconfig
->>>>>>> 02fe880aad574e7792a35462283c82fc6735ba2a
+webVue/static

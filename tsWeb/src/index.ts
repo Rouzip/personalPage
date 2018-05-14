@@ -1,19 +1,24 @@
 import Koa, { Context } from "koa";
 import bodyParser from "koa-bodyparser";
 import logger from "koa-logger";
+import mount from "koa-mount";
+import serve from "koa-static";
 import views from "koa-views";
 import path from "path";
 import db from "./model";
 import router from "./router";
 
-
-
-
-
 const app = new Koa();
 
 // 打印日志
 app.use(logger());
+
+// 使用static来进行静态数据的获取
+const staticPath: string = "./static";
+app.use(serve(staticPath))
+// 此处为前端数据的整合，挂上dist目录与static分离
+app.use(mount('/dist', serve(__dirname+'/./static/dist')))
+
 
 // 使用模板进行渲染
 app.use(

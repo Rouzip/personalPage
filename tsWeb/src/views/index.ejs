@@ -1,13 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
+  <meta charset="utf-8">
+  <title>中南大学个人主页</title>
 </head>
 
 <body>
-    <form action="/api/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" />
-        <input type="submit" value="ok" />
-    </form>
+  <div id="app"></div>
+  <script src="/dist/build.js"></script>
 </body>
+
+<style>
+  body,
+  ul {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+</style>
+<script>
+  // 禁止使用滚动 hack掉事件
+  window.onscroll = function () {
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</html>

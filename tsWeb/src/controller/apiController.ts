@@ -1,7 +1,7 @@
 import { Context } from "koa";
 import db from "../model";
 import { UserAttributes, UserInstance } from "../model/model";
-import { reName, userMap } from "./tool";
+import { loadPic, reName, userMap } from "./tool";
 
 /**
  * 将tmp文件重命名为用户id图片
@@ -55,13 +55,16 @@ export async function modifyInfo(ctx: Context) {
 let num: number = 0;
 export function viewPeopleNum(ctx: Context) {
   num++;
-  console.log('浏览人数', num)
+  console.log("浏览人数", num);
   ctx.response.body = {
-    'people': num
-  }
+    people: num
+  };
 }
 
 export async function getPic(ctx: Context) {
-  let req = ctx.request
-  console.log(req)
+  let photoName: string | undefined = ctx.request.url.split("/").pop();
+  if (photoName !== undefined){
+    await loadPic(photoName);
+  }
+  ctx.response.status = 200
 }

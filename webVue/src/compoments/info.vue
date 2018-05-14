@@ -9,12 +9,14 @@
       </el-carousel-item>
     </el-carousel>
     <div class="middle-box">
-      <div class="pictures" v-for="teacher in this.$store.state.teachers" :key="teacher.id">
+      <div class="pictures" v-for="teacher in this.$store.state.teachers" 
+                            :key="teacher.id">
         <a> </a>
-        <span> </span>
-        <span> </span>
+        <span> {{teacher.name}} </span>
+        <span> {{ teacher.pisition }} </span>
         <button @click="picGet(teacher.picture)"></button>
-        <img src="" alt="教师图片" class="avatar">
+        <!-- 这里并不是最后能够编译的 -->
+        <img :src="'static/'+teacher.picture" alt="教师图片" class="avatar">
       </div>
     </div>
   </div>
@@ -38,7 +40,8 @@ export default {
     },
     picGet: async function(name) {
       let res = await this.$http.get('/api/photos/'+name)
-      photo = res.data.image
+      let photo = res.data.image
+      console.log(photo)
     }
   }
 };
@@ -49,6 +52,9 @@ export default {
 }
 .pictures{
   position: fixed;
+  display: inline-flex;
+  width: 30%;
+  height: 30%;
 }
 .middle-box {
   display: flex;
@@ -58,5 +64,11 @@ export default {
   height: 200px;
   width: 100%;
   background: #333333;
+}
+.avatar {
+  overflow: hidden;
+  width: 40%;
+  height: 40%;
+  float: left;
 }
 </style>
