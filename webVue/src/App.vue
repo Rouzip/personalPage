@@ -46,8 +46,6 @@ export default {
       function addZero(num,len){
         return (Array(len).join('0')+num).slice(num.toString().length-1)
       }
-      'safsa'
-      console.log(addZero(num, len), num, len, '123')
       this.watchNum = addZero(num, len)
     }
   }
