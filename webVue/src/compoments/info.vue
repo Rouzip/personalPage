@@ -26,6 +26,8 @@ export default {
   name: "mainBanner",
   data: function() {
     return {
+      // 这里使用索引来进行picture的展示
+      // 在父组件进行循环的时候，动态的改变三个索引值来改变图像？
       pictures: [0, 1, 2]
     };
   },
@@ -51,10 +53,9 @@ export default {
   background-repeat: no-repeat;
 }
 .pictures{
-  position: fixed;
-  display: inline-flex;
+  display: -webkit-inline-flex;
   width: 30%;
-  height: 30%;
+  height: 100%;
 }
 .middle-box {
   display: flex;
