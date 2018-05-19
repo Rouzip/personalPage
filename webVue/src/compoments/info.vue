@@ -14,10 +14,11 @@
             v-for="index in teachers.length"
             :key="index"
             v-show="showArray[index-1]">
-        <!-- TODO: 使用一个boolean的数组来判断是否展示这个item，用pictureIndex来记录展示的3个索引 -->
-        <!-- FIXME:现在的bug是思路问题，如果把是否在数组中定为函数，无法触发重新判断，但是放在计算属性中，一开始没法初始化 -->
-        <!-- 方向1：change事件触发之后，更新pictureIndex，watch更新showArray -->
-        <img :src="'static/'+teacherInfo(index-1, 'picture')" alt="教师图片" class="avatar">
+        <!-- 使用一个boolean的数组来判断是否展示这个item，用pictureIndex来记录展示的3个索引 -->
+        <img :src="'static/'+teacherInfo(index-1, 'picture')" 
+              alt="教师图片" 
+              class="avatar" 
+              @click="jumpPersonPage(teacherInfo(index-1, 'id'))">
         <div class="info">
           <div class="texts">
             教师姓名：{{teacherInfo(index-1, 'name')}}
@@ -79,13 +80,11 @@ export default {
       this.picturesIndex.forEach(index=>{
         tmp.push(index)
       })
-      // for(const v in tmp)
-        console.log(tmp)
       for (let i=0;i<this.teachers.length;i++) {
+        // https://www.w3schools.com/jsref/jsref_operators.asp
+        // 对于in的理解不对，换成indexof
         if (tmp.indexOf(i) !== -1) {
-          console.log(i)
           this.$set(this.showArray, i, true)
-          // this.showArray[i] = true
         }
         else {
           this.$set(this.showArray, i, false)
@@ -102,6 +101,9 @@ export default {
         if (i in this.picturesIndex) this.showArray[i] = true
         else this.showArray[i] = false
       }
+    },
+    jumpPersonPage(id) {
+      this.$router.push({path: `/infos/${id}`})
     }
   },
   computed: {

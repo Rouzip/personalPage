@@ -32,9 +32,9 @@ export default {
     "nav-header": nav
   },
   // 此处只是为了模拟转换
-  created: function() {
-    this.getViewNum()
-    this.$router.push("/showBanner");
+  created: async function() {
+    await this.getViewNum()
+    this.$router.push("/showbanner");
   },
   methods: {
     // 计算浏览人数
