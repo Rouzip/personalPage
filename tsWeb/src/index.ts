@@ -14,8 +14,9 @@ const app = new Koa();
 app.use(logger());
 
 // 使用static来进行静态数据的获取
-const staticPath: string = "./static";
-app.use(serve(staticPath))
+const staticPath: string = "/./static";
+app.use(serve(__dirname+staticPath))
+console.log(__dirname + staticPath)
 // 此处为前端数据的整合，挂上dist目录与static分离
 app.use(mount('/dist', serve(__dirname+'/./static/dist')))
 
@@ -38,7 +39,7 @@ app.use(async (ctx: Context, next: () => Promise<any>) => {
 // https://github.com/xkeshi/ts-koa-middleware-template/blob/master/src/index.ts
 app.use(async (ctx: Context, next: () => Promise<any>) => {
   try {
-    console.log(ctx.request.url);
+    // console.log(ctx.request.url);
     await next();
   } catch (err) {
     console.log(err);
