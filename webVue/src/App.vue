@@ -5,11 +5,7 @@
         <nav-header class="nav-header"> </nav-header>
       </el-header>
       <el-main style="padding:0;">
-        <!-- <div class="test"> -->
         <router-view class="main-show"></router-view>
-          <!-- <img src="./assets/1.jpg" style="width: 100%;height: 490px;"> -->
-          <!-- 撒发觉了时间啊发了萨基发了；框架 -->
-        <!-- </div> -->
       </el-main>
       <el-footer class="foot"> 浏览人数 {{ watchNum }} &nbsp;&nbsp;&nbsp;Right:Rouzip </el-footer>
     </el-container>
@@ -47,6 +43,9 @@ export default {
         return (Array(len).join('0')+num).slice(num.toString().length-1)
       }
       this.watchNum = addZero(num, len)
+    },
+    async login() {
+      
     }
   }
 };

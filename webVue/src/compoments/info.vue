@@ -125,7 +125,7 @@ export default {
 }
 .middle-box {
   display: flex;
-  z-index: 10000;
+  z-index: 2;
   position: fixed;
   top: 35%;
   height: 200px;
