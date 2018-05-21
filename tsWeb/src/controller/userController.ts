@@ -7,12 +7,10 @@ import { guid, userMap } from "./tool";
 
 /**
  * 用来判断用户是否存在
- * @param usrName 用户名
  * @param pwd 用户密码
  * @returns 判断用户的结果 boolean
  */
 async function checkPwd(
-  usrName: string,
   pwd: string,
   user: UserInstance | null
 ): Promise<boolean> {
@@ -22,7 +20,7 @@ async function checkPwd(
       return false;
     }
     // 如果用户密码错误
-    if (user.passward !== pwd) {
+    if (user.password !== pwd) {
       return false;
     }
   } catch (error) {
@@ -37,17 +35,17 @@ async function checkPwd(
  * @TODO: 此段只适用于开发检测，成品需要使用短信登录
  * @param ctx {usrName: string, pwd: string}
  */
-async function login(ctx: Context) {
+export async function loginTest(ctx: Context) {
   try {
-    let usrName: string = ctx.request.body.name;
+    let tel: string = ctx.request.body.tel;
     // 找到用户是否存在
     let user: UserInstance | null = await db.User.findOne({
       where: {
-        name: usrName
+        'telephone': tel
       }
     });
     let pwd: string = ctx.request.body.pwd;
-    let exist: boolean = await checkPwd(usrName, pwd, user);
+    let exist: boolean = await checkPwd(pwd, user);
     let response: loginResp;
     if (exist && user !== null) {
       let cookie = guid();
@@ -73,7 +71,7 @@ async function login(ctx: Context) {
  * 前端状态记录改变，使其退出
  * @param ctx
  */
-async function logout(ctx: Context) {
+export async function logout(ctx: Context) {
   let uuid = ctx.cookies.get("uuid");
   userMap.delete(uuid);
   ctx.response.body = { exit: true };
@@ -81,7 +79,7 @@ async function logout(ctx: Context) {
   ctx.cookies.set("uuid", "");
 }
 
-async function signUp(ctx: Context) {
+export async function signUp(ctx: Context) {
   // 从前端读取数据，并为其创建唯一uuid
   let usrName: string = ctx.request.body.usrName;
   let pwd: string = ctx.request.body.pwd;
@@ -90,7 +88,7 @@ async function signUp(ctx: Context) {
   let data = {
     id: id,
     name: usrName,
-    passward: pwd,
+    password: pwd,
     telephone: tel,
     position: "",
     email: "",

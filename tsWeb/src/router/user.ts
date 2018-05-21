@@ -1,10 +1,11 @@
 import Router from "koa-router";
+import { loginTest, logout, signUp } from "../controller/userController";
 
 const router = new Router();
 
-router.get("/login");
-router.post("logout");
-router.post("/sigup");
+router.post("/login", loginTest);
+router.get("logout", logout);
+router.post("/sigup", signUp);
 router.post("/modify");
 
 export { router };

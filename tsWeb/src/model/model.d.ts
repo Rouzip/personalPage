@@ -5,7 +5,7 @@ export interface UserAttributes {
   id:string;
 
   name: string;
-  passward: string;
+  password: string;
   telephone: string;
   position: string;
   email: string;
@@ -19,7 +19,7 @@ export interface UserInstance extends Sequelize.Instance < UserAttributes >{
   id: string;
 
   name: string;
-  passward: string;
+  password: string;
   telephone: string;
   position: string;
   email: string;
