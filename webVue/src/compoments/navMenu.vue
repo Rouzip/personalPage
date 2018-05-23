@@ -152,10 +152,8 @@ export default {
       }
     },
     async logout() {
-      // TODO: 后端发送消息，登出
       let res = await this.$http.get('/user/logout')
       if (res.data.exit === true) {
-        // TODO: 退出成功
         this.$message({
           showClose: true,
           message: '登出成功',

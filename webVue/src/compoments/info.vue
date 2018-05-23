@@ -58,58 +58,58 @@ export default {
         "background-repeat": "no-repeat"
       };
     },
-    teacherInfo: function (index, key) {
+    teacherInfo: function(index, key) {
       // 获取teacher的信息
       try {
-        if (this.$store.state.teachers.length === 0) return
-      return this.teachers[index][key]
+        if (this.$store.state.teachers.length === 0) return;
+        return this.teachers[index][key];
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     },
-    addIndex:function(path){
+    addIndex: function(path) {
       // 跟随carsouel的change触发的函数
-      if (this.$store.state.teachers.length === 0) return
+      if (this.$store.state.teachers.length === 0) return;
       // 这里只打算展示3张，所以用做三次循环
-      for (let i=0;i<3;i++) {
-        let newValue = (this.picturesIndex[i] + 3) % this.$store.state.teachers.length
-        this.$set(this.picturesIndex, i, newValue)
+      for (let i = 0; i < 3; i++) {
+        let newValue =
+          (this.picturesIndex[i] + 3) % this.$store.state.teachers.length;
+        this.$set(this.picturesIndex, i, newValue);
       }
       // trick 不搞observe，直接用数组
-      let tmp = []
-      this.picturesIndex.forEach(index=>{
-        tmp.push(index)
-      })
-      for (let i=0;i<this.teachers.length;i++) {
+      let tmp = [];
+      this.picturesIndex.forEach(index => {
+        tmp.push(index);
+      });
+      for (let i = 0; i < this.teachers.length; i++) {
         // https://www.w3schools.com/jsref/jsref_operators.asp
         // 对于in的理解不对，换成indexof
         if (tmp.indexOf(i) !== -1) {
-          this.$set(this.showArray, i, true)
-        }
-        else {
-          this.$set(this.showArray, i, false)
+          this.$set(this.showArray, i, true);
+        } else {
+          this.$set(this.showArray, i, false);
         }
       }
     },
     showJudge(index) {
       // 判断是否可以展示
-      if (index in this.picturesIndex) return true
-      else return false
+      if (index in this.picturesIndex) return true;
+      else return false;
     },
     updateShowArray() {
-      for (let i=0;i<this.teachers.length;i++) {
-        if (i in this.picturesIndex) this.showArray[i] = true
-        else this.showArray[i] = false
+      for (let i = 0; i < this.teachers.length; i++) {
+        if (i in this.picturesIndex) this.showArray[i] = true;
+        else this.showArray[i] = false;
       }
     },
     jumpPersonPage(id) {
-      this.$router.push({path: `/infos/${id}`})
+      this.$router.push({ path: `/infos/${id}` });
     }
   },
   computed: {
     teachers: function() {
-      if (this.$store.state.teachers.length === 0) return []
-      else return this.$store.state.teachers
+      if (this.$store.state.teachers.length === 0) return [];
+      else return this.$store.state.teachers;
     }
   }
 };
@@ -118,7 +118,7 @@ export default {
 .banner {
   background-repeat: no-repeat;
 }
-.pictures{
+.pictures {
   display: flex;
   width: 20%;
   height: 100%;

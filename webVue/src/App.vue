@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       msg: "Welcome to Your Vue.js App",
-      watchNum: '',
+      watchNum: ""
     };
   },
   components: {
@@ -29,24 +29,22 @@ export default {
   },
   // 此处只是为了模拟转换
   created: async function() {
-    await this.getViewNum()
+    await this.getViewNum();
     this.$router.push("/showbanner");
   },
   methods: {
     // 计算浏览人数
     async getViewNum() {
-      let res = await this.$http.get('/api/peoples')
-      let num = parseInt(res.data.people)
-      let len = 6
+      let res = await this.$http.get("/api/peoples");
+      let num = parseInt(res.data.people);
+      let len = 6;
       // 为浏览人数补0
-      function addZero(num,len){
-        return (Array(len).join('0')+num).slice(num.toString().length-1)
+      function addZero(num, len) {
+        return (Array(len).join("0") + num).slice(num.toString().length - 1);
       }
-      this.watchNum = addZero(num, len)
+      this.watchNum = addZero(num, len);
     },
-    async login() {
-      
-    }
+    async login() {}
   }
 };
 </script>
