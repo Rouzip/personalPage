@@ -4,15 +4,27 @@
       <h1 class="note" :style="note">
         <a href="/" hidefocus="true"> a </a>
       </h1>
-      <el-menu mode="horizontal" background-color="#1e679e" active-text-color="" class="nav-menu">
-        <el-submenu index="1">
-          <template slot="title"> 院系单位 </template>
-          <el-menu-item v-for="depart in this.$store.state.departments" 
-                        :key="depart" 
-                        :index="depart">
-            <span> {{ depart }} </span>
-          </el-menu-item>
-        </el-submenu>
+      <el-menu mode="horizontal" 
+                background-color="#1e679e" 
+                active-text-color="" 
+                class="nav-menu">
+        <el-menu-item index="1" @click="openDepList">院系单位
+        </el-menu-item>
+          <el-dialog  title="学院列表"
+                      :visible.sync="dialogDep"
+                      :modal-append-to-body="false"
+                      :before-close="closeDepList"
+                      :close-on-click-modal=false
+                      width="90%"
+                      top="5vh">
+            <div id="dep-frame">
+              <el-button v-for="dep in this.$store.state.departments" 
+                  :key="dep"
+                  class="dep-item">
+                {{dep}}
+              </el-button>
+            </div>
+          </el-dialog>
         <el-submenu index="2">
           <template slot="title"> 员工职位 </template>
           <el-menu-item v-for="position in positions" :key="position" :index="position">
@@ -20,26 +32,31 @@
           </el-menu-item>
         </el-submenu>
       </el-menu>
-      <el-button round type="primary" 
-                  v-if="!log" 
-                  class="user-button" 
-                  @click="openDialog"> 登录 </el-button>
-      <el-button round type="primary" 
-                  v-else 
-                  class="user-button" 
-                  @click="logout"> 登出 </el-button>
-      <el-dialog :visible.sync="dialogOpen"
-                  :modal-append-to-body=false
-                  :close-on-click-modal=false
-                  width="30%">
+      <el-button 
+        round type="primary" 
+        v-if="!log" 
+        class="user-button" 
+        @click="openDialog"> 登录 </el-button>
+      <el-button 
+        round type="primary" 
+        v-else 
+        class="user-button" 
+        @click="logout"> 登出 </el-button>
+      <el-dialog 
+        :visible.sync="dialogOpen"
+        :modal-append-to-body=false
+        :close-on-click-modal=false
+        :modal="false"
+        width="30%">
         <el-tabs v-model="activeName">
+          <!-- FIXME: 以后将登陆action中加入router的push，直接推送到编辑页 -->
           <el-tab-pane label="登陆" name="first">
             <el-input
               placeholder="请输入电话"
               suffix-icon="el-icon-tickets"
               v-model="tel"
               clearable
-              style="margin-top:10%;">
+              style="margin-top:10%; margin-bottom:10%;">
             </el-input>
             <el-input
               placeholder="请输入密码"
@@ -63,7 +80,7 @@
               suffix-icon="el-icon-tickets"
               v-model="tel"
               clearable
-              style="margin-top:10%;">
+              style="margin-top:10%; margin-bottom:10%;">
             </el-input>
             <el-input
               placeholder="请输入电话"
@@ -95,7 +112,8 @@ export default {
       pwd: "",
       user: "",
       activeName: "first",
-      dialogOpen: false,
+      dialogOpen: false, // 此处用于登录
+      dialogDep: false, // 此处用于学院列表
       note: {
         backgroundImage: "url(" + require("../assets/logo.jpg") + ")",
         backgroundRepeat: "no-repeat",
@@ -137,6 +155,12 @@ export default {
     openDialog() {
       this.dialogOpen = true;
     },
+    openDepList() {
+      this.dialogDep = true;
+    },
+    closeDepList() {
+      this.dialogDep = false;
+    },
     async login() {
       let res = await this.$http.post(
         "/user/login",
@@ -153,6 +177,8 @@ export default {
           message: "登陆成功",
           type: "success"
         });
+        this.tel = "";
+        this.pwd = "";
       } else {
         this.$message({
           showClose: true,
@@ -227,6 +253,18 @@ export default {
 .submit-button {
   text-align: center;
   margin-top: 10%;
+}
+#dep-frame {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  align-content: center;
+  flex-wrap: wrap;
+}
+.dep-item {
+  /* flex: 20%; */
+  width: 25%;
+  margin: 1vh 1vh 1vh 0;
 }
 h1 {
   margin: 0;

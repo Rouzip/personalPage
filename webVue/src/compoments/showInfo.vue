@@ -21,12 +21,23 @@
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
       </el-upload>
+      <el-input clearable class="edit-item" v-model="tel" placeholder="电话"></el-input>
+      <el-input clearable class="edit-item" v-model="position" placeholder="职位"></el-input>
+      <el-input clearable class="edit-item" v-model="email" placeholder="email"></el-input>
+      <el-input clearable class="edit-item" v-model="department" placeholder="院系"></el-input>
+      <el-input clearable class="edit-item" v-model="degree" placeholder="学位"></el-input>
     </div>
     <div class="main-board" v-if="!isEdit">
       {{teacher.introduce}}
     </div>
     <div class="main-edit" v-else>
-      <div></div>
+      <el-input 
+        type="textarea"
+        placeholder="请输入自我介绍"
+        :rows="13"
+        v-model="introduce">
+      </el-input>
+      <el-button class="save-button" type="primary">保存</el-button>
     </div>
   </div>
 </template>
@@ -39,6 +50,7 @@ export default {
       pictureURL: "/static/",
       teacher: {},
       imageUrl: "", // 用来上传到的图片的url
+      tel: "",
       introduce: "",
       degree: "", // 学位
       email: "",
@@ -150,15 +162,15 @@ export default {
   background: #909399;
   height: 100%;
 }
-.avatar-uploader .el-upload {
+.avatar-uploader {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
 }
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
+.avatar-uploader:hover {
+  border-color: #c78118;
 }
 .avatar-uploader-icon {
   font-size: 28px;
@@ -167,5 +179,13 @@ export default {
   height: 178px;
   line-height: 178px;
   text-align: center;
+}
+.edit-item {
+  width: 80%;
+  margin: 1vh;
+}
+.save-button {
+  margin-top: 5vh;
+  margin-left: 45%;
 }
 </style>
