@@ -41,7 +41,7 @@ export async function loginTest(ctx: Context) {
     // 找到用户是否存在
     let user: UserInstance | null = await db.User.findOne({
       where: {
-        'telephone': tel
+        telephone: tel
       }
     });
     let pwd: string = ctx.request.body.pwd;
@@ -102,6 +102,36 @@ export async function signUp(ctx: Context) {
     await db.User.create(data);
     ctx.response.body = { success: false };
   } catch (error) {
+    ctx.response.body = { success: false };
+  }
+}
+
+/**
+ * 用户用来修改自己的信息，更新全部的信息
+ * @param ctx
+ */
+export async function modifyInfo(ctx: Context): Promise<void> {
+  let id: string = ctx.request.body.id;
+  try {
+    let user: UserInstance | null = await db.User.findOne({
+      where: {
+        id: id
+      }
+    });
+    if (user !== null) {
+      await user.updateAttributes({
+        telephone: ctx.request.body.telephone,
+        position: ctx.request.body.position,
+        email: ctx.request.body.email,
+        department: ctx.request.body.department,
+        degree: ctx.request.body.degree,
+        introduce: ctx.request.body.introduce
+      });
+    }
+    ctx.response.body = { success: true };
+  } catch (error) {
+    console.log(error);
+    // 修改出错，服务器报错
     ctx.response.body = { success: false };
   }
 }

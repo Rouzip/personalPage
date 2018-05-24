@@ -53,7 +53,8 @@ export async function reName(file: any, id: string): Promise<void> {
   let oldName: string = file.path;
   // 拼接好指定的文件
   let picName: string =
-    __dirname + "/../uploads/" + id + "a." + file.type.split("/")[1];
+    __dirname + "\\..\\static\\" + id + "." + file.type.split("/")[1];
+  let dataPicName: string = id + "." + file.type.split("/")[1];
   console.log(oldName, picName);
   let user: UserInstance | null = await db.User.findOne({
     where: {
@@ -63,15 +64,20 @@ export async function reName(file: any, id: string): Promise<void> {
 
   // 更新用户的图片属性，记录图片存储位置
   if (user !== null) {
-    await user.updateAttributes({ picture: picName });
+    await user.updateAttributes({ picture: dataPicName });
   }
 
-  fs.rename(oldName, picName, err => {
-    if (err) {
-      throw "重命名出错";
-    }
-    console.log("重命名成功");
-  });
+  try {
+    fs.rename(oldName, picName, err => {
+      if (err) {
+        throw "重命名出错";
+      }
+      console.log("重命名成功");
+    });
+  } catch (error) {
+    console.log(error);
+    console.log(123);
+  }
 }
 
 /**
@@ -82,9 +88,8 @@ export async function loadPic(name: string) {
   let paths = __dirname + "/../../static/";
   console.log(paths);
   fs.readFile(paths + name, "utf-8", (err, data) => {
-    console.log(err)
-    if (data !== undefined){
-      
+    console.log(err);
+    if (data !== undefined) {
     }
   });
 }

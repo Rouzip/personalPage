@@ -1,7 +1,11 @@
 import koaBody from "koa-body";
 import Router from "koa-router";
-import { reNamePic, teacherInfos, viewPeopleNum, getPic, teacherInfo } from "../controller/apiController";
-
+import {
+  reNamePic,
+  teacherInfos,
+  viewPeopleNum,
+  teacherInfo
+} from "../controller/apiController";
 
 const router = new Router();
 
@@ -12,14 +16,13 @@ router.post(
     multipart: true,
     formLimit: 10 * 1024,
     formidable: {
-      uploadDir: __dirname + "/../uploads"
+      uploadDir: __dirname + "/../static"
     }
   }),
   reNamePic
 );
 router.get("/teachers", teacherInfos);
-router.post('/teacher', teacherInfo);
+router.post("/teacher", teacherInfo);
 router.get("/peoples", viewPeopleNum);
-router.get('/photos/:name', getPic);
 
 export { router };

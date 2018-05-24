@@ -15,10 +15,9 @@ app.use(logger());
 
 // 使用static来进行静态数据的获取
 const staticPath: string = "/./static";
-app.use(serve(__dirname+staticPath))
+app.use(serve(__dirname + staticPath));
 // 此处为前端数据的整合，挂上dist目录与static分离
-app.use(mount('/dist', serve(__dirname+'/./static/dist')))
-
+app.use(mount("/dist", serve(__dirname + "/./static/dist")));
 
 // 使用模板进行渲染
 app.use(
@@ -57,4 +56,6 @@ db.sequelize.sync();
 // 使用提前指定好的路由
 app.use(router.routes()).use(router.allowedMethods());
 
-app.listen(3000);
+app.listen(3000, () => {
+  console.log("服务器开始运行，端口：3000");
+});

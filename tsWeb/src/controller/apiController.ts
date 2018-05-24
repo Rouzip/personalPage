@@ -12,6 +12,7 @@ export async function reNamePic(ctx: Context): Promise<void> {
   let file: any = ctx.request.body.files.file;
   let cookie: string = ctx.cookies.get("uuid");
   let id = userMap.get(cookie) || "";
+  console.log(userMap);
   console.log("id:", id);
   await reName(file, id);
   ctx.response.status = 200;
@@ -35,34 +36,8 @@ export async function teacherInfo(ctx: Context): Promise<void> {
       }
     });
     ctx.response.body = user;
-  } catch(error) {
-    console.log(error);
-  }
-}
-
-/**
- * 用户用来修改自己的信息，原信息保存在客户端
- * @param ctx
- */
-export async function modifyInfo(ctx: Context): Promise<void> {
-  let id: string = ctx.request.body.id;
-  let model: string = ctx.request.body.model;
-  let data: string = ctx.request.body.data;
-  try {
-    let user: UserInstance | null = await db.User.findOne({
-      where: {
-        id: id
-      }
-    });
-    if (user !== null) {
-      await user.updateAttributes({
-        model: data
-      });
-    }
   } catch (error) {
     console.log(error);
-    // 修改出错，服务器报错
-    ctx.response.status = 500;
   }
 }
 
@@ -70,7 +45,7 @@ export async function modifyInfo(ctx: Context): Promise<void> {
 let num: number = 0;
 /**
  * 统计浏览人数，访问一次主页面+1
- * @param ctx 
+ * @param ctx
  */
 export function viewPeopleNum(ctx: Context): void {
   num++;
@@ -78,16 +53,4 @@ export function viewPeopleNum(ctx: Context): void {
   ctx.response.body = {
     people: num
   };
-}
-
-/**
- * 异步读取数据信息
- * @param ctx 
- */
-export async function getPic(ctx: Context): Promise<void> {
-  let photoName: string | undefined = ctx.request.url.split("/").pop();
-  if (photoName !== undefined) {
-    await loadPic(photoName);
-  }
-  ctx.response.status = 200
 }
