@@ -16,7 +16,6 @@
         :with-credentials="true"
         :show-file-list="false"
         :on-success="handleAvatarSuccess"
-        :on-error="test"
         :before-upload="beforeAvatarUpload">
         <img v-if="imageUrl" :src="imageUrl" class="avatar">
         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
@@ -37,7 +36,7 @@
         :rows="13"
         v-model="introduce">
       </el-input>
-      <el-button class="save-button" type="primary">保存</el-button>
+      <el-button class="save-button" type="primary" @click="updateInfo">保存</el-button>
     </div>
   </div>
 </template>
@@ -76,8 +75,36 @@ export default {
       }
       return (isJPG || isPNG) && isLt2M;
     },
-    test(error, file, filelist) {
-      console.log(error);
+    async updateInfo() {
+      try {
+        let res = await this.$http.post(
+          "/user/modify",
+          qs.stringify({
+            id: this.teacher.id,
+            telephone: this.tel,
+            position: this.position,
+            email: this.email,
+            department: this.department,
+            degree: this.degree,
+            introduce: this.introduce
+          })
+        );
+        if (res.data.success === true) {
+          this.$message({
+            showClose: true,
+            message: "修改成功",
+            type: "success"
+          });
+          this.teacher.telephone = this.tel;
+          this.teacher.position = this.position;
+          this.teacher.email = this.email;
+          this.teacher.department = this.department;
+          this.teacher.degree = this.degree;
+          this.teacher.introduce = this.introduce;
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
   computed: {
@@ -96,6 +123,14 @@ export default {
       );
       this.teacher = response.data;
       this.pictureURL += this.teacher.picture;
+
+      // 将数据预设为以前的资料
+      this.tel = this.teacher.telephone;
+      this.position = this.teacher.position;
+      this.email = this.teacher.email;
+      this.department = this.teacher.department;
+      this.degree = this.teacher.degree;
+      this.introduce = this.teacher.introduce;
     } catch (error) {
       console.log(error);
     }
