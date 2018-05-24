@@ -15,7 +15,7 @@
             :key="index"
             v-show="showArray[index-1]">
         <!-- 使用一个boolean的数组来判断是否展示这个item，用pictureIndex来记录展示的3个索引 -->
-        <img :src="'static/'+teacherInfo(index-1, 'picture')" 
+        <img :src="'/static/'+teacherInfo(index-1, 'picture')" 
               alt="教师图片" 
               class="avatar" 
               @click="jumpPersonPage(teacherInfo(index-1, 'id'))">

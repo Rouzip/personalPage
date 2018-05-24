@@ -7,7 +7,9 @@
       <el-menu mode="horizontal" background-color="#1e679e" active-text-color="" class="nav-menu">
         <el-submenu index="1">
           <template slot="title"> 院系单位 </template>
-          <el-menu-item v-for="depart in departs" :key="depart" :index="depart">
+          <el-menu-item v-for="depart in this.$store.state.departments" 
+                        :key="depart" 
+                        :index="depart">
             <span> {{ depart }} </span>
           </el-menu-item>
         </el-submenu>
@@ -18,8 +20,14 @@
           </el-menu-item>
         </el-submenu>
       </el-menu>
-      <el-button round type="primary" v-if="!log" class="user-button" @click="openDialog"> 登录 </el-button>
-      <el-button round type="primary" v-else class="user-button" @click="logout"> 登出 </el-button>
+      <el-button round type="primary" 
+                  v-if="!log" 
+                  class="user-button" 
+                  @click="openDialog"> 登录 </el-button>
+      <el-button round type="primary" 
+                  v-else 
+                  class="user-button" 
+                  @click="logout"> 登出 </el-button>
       <el-dialog :visible.sync="dialogOpen"
                   :modal-append-to-body=false
                   :close-on-click-modal=false
@@ -83,10 +91,10 @@ import qs from "qs";
 export default {
   data() {
     return {
-      tel: '',
-      pwd: '',
-      user: '',
-      activeName: 'first',
+      tel: "",
+      pwd: "",
+      user: "",
+      activeName: "first",
       dialogOpen: false,
       note: {
         backgroundImage: "url(" + require("../assets/logo.jpg") + ")",
@@ -100,7 +108,7 @@ export default {
   },
   computed: {
     log() {
-      return this.$store.state.isLog
+      return this.$store.state.isLog;
     },
     departs: function() {
       let departmentSet = new Set();
@@ -127,41 +135,43 @@ export default {
   },
   methods: {
     openDialog() {
-      this.dialogOpen = true
+      this.dialogOpen = true;
     },
     async login() {
-      let res = await this.$http.post('/user/login', qs.stringify({
-        'tel': this.tel,
-        'pwd': this.pwd
-      }))
+      let res = await this.$http.post(
+        "/user/login",
+        qs.stringify({
+          tel: this.tel,
+          pwd: this.pwd
+        })
+      );
       if (res.data.exist === true) {
-        this.$store.commit('reverseState')
-        this.dialogOpen = false
+        this.$store.commit("reverseState");
+        this.dialogOpen = false;
         this.$message({
           showClose: true,
-          message: '登陆成功',
-          type: 'success'
-        })
-      }
-      else {
+          message: "登陆成功",
+          type: "success"
+        });
+      } else {
         this.$message({
           showClose: true,
-          message: '密码错误',
-          type: 'error'
-        })
+          message: "密码错误",
+          type: "error"
+        });
       }
     },
     async logout() {
-      let res = await this.$http.get('/user/logout')
+      let res = await this.$http.get("/user/logout");
       if (res.data.exit === true) {
         this.$message({
           showClose: true,
-          message: '登出成功',
-          type: 'success'
-        })
-        this.$store.commit('reverseState')
+          message: "登出成功",
+          type: "success"
+        });
+        this.$store.commit("reverseState");
       } else {
-        this.$router.push('/showbanner')
+        this.$router.push("/showbanner");
       }
     }
   },
@@ -190,7 +200,7 @@ export default {
 }
 .f-cb:after {
   clear: both;
-  content: '.';
+  content: ".";
   display: block;
   height: 0;
   visibility: hidden;

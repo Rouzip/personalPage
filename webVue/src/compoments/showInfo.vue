@@ -1,6 +1,6 @@
 <template>
   <div class="boarder">
-    <div class="aside-board">
+    <div class="aside-board" v-if="!isEdit">
       <div class="photo-frame"> <img :src="pictureURL" alt="教师头像" class="avatar"> </div>
       <div class="item">{{ '姓名：'+teacher.name }}</div>
       <div class="item">{{ '电话：'+teacher.telephone }}</div>
@@ -9,8 +9,24 @@
       <div class="item"> {{ '院系：'+teacher.department }} </div>
       <div class="item"> {{ '学位：'+teacher.degree }} </div>
     </div>
-    <div class="main-board">
+    <div class="aside-edit" v-else>
+      <el-upload
+        class="avatar-uploader"
+        action="http://localhost:3000/api/upload"
+        :with-credentials="true"
+        :show-file-list="false"
+        :on-success="handleAvatarSuccess"
+        :on-error="test"
+        :before-upload="beforeAvatarUpload">
+        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+      </el-upload>
+    </div>
+    <div class="main-board" v-if="!isEdit">
       {{teacher.introduce}}
+    </div>
+    <div class="main-edit" v-else>
+      <div></div>
     </div>
   </div>
 </template>
@@ -21,11 +37,43 @@ export default {
   data: function() {
     return {
       pictureURL: "/static/",
-      isEdit: false, // 判断是否处于编辑状态
-      teacher: {}
+      teacher: {},
+      imageUrl: "", // 用来上传到的图片的url
+      introduce: "",
+      degree: "", // 学位
+      email: "",
+      position: "", // 职位
+      department: "" // 院系
     };
   },
-  methods: {},
+  methods: {
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      console.log("url is:", this.imageUrl);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isPNG = file.type === "image/png";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG && !isPNG) {
+        this.$message.error("上传头像图片只能是 JPG或PNG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return (isJPG || isPNG) && isLt2M;
+    },
+    test(error, file, filelist) {
+      console.log(error);
+    }
+  },
+  computed: {
+    isEdit: function() {
+      // 判断是否处于编辑状态下
+      return this.$store.state.isLog;
+    }
+  },
   async created() {
     // 获取到现在教师的id
     try {
@@ -36,7 +84,6 @@ export default {
       );
       this.teacher = response.data;
       this.pictureURL += this.teacher.picture;
-      console.log(this.teacher);
     } catch (error) {
       console.log(error);
     }
@@ -84,6 +131,41 @@ export default {
   width: 100%;
 }
 .item {
+  text-align: center;
+}
+.aside-edit {
+  align-items: center;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
+  justify-content: center;
+  display: flex;
+  flex: 1;
+  background: #606266;
+  overflow: hidden;
+  height: 100%;
+}
+.main-edit {
+  padding: 5%;
+  flex: 2;
+  background: #909399;
+  height: 100%;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
   text-align: center;
 }
 </style>
