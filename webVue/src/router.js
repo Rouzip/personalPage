@@ -3,6 +3,7 @@ import Router from "vue-router";
 
 import mainBanner from "./compoments/info";
 import showBoard from "./compoments/showinfo";
+import teacherList from "./compoments/showBoard";
 
 Vue.use(Router);
 export default new Router({
@@ -14,6 +15,10 @@ export default new Router({
     {
       path: "/infos/:id",
       component: showBoard
+    },
+    {
+      path: "/board/:type/:group",
+      component: teacherList
     }
   ],
   mode: "history"

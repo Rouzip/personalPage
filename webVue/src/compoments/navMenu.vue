@@ -20,14 +20,18 @@
             <div id="dep-frame">
               <el-button v-for="dep in this.$store.state.departments" 
                   :key="dep"
-                  class="dep-item">
+                  class="dep-item"
+                  @click="jumpBoard(dep)">
                 {{dep}}
               </el-button>
             </div>
           </el-dialog>
         <el-submenu index="2">
           <template slot="title"> 员工职位 </template>
-          <el-menu-item v-for="position in positions" :key="position" :index="position">
+          <el-menu-item v-for="position in positions" 
+                        :key="position" 
+                        :index="position"
+                        @click="jumpBoard2(position)">
             <span> {{ position }} </span>
           </el-menu-item>
         </el-submenu>
@@ -160,6 +164,13 @@ export default {
     },
     closeDepList() {
       this.dialogDep = false;
+    },
+    jumpBoard(type) {
+      this.$router.push("/board/" + "department" + "/" + type);
+      this.dialogDep = false;
+    },
+    jumpBoard2(position) {
+      this.$router.push("/board/" + "position" + "/" + position);
     },
     async login() {
       let res = await this.$http.post(
