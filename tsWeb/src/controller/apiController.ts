@@ -54,3 +54,25 @@ export function viewPeopleNum(ctx: Context): void {
     people: num
   };
 }
+
+/**
+ * 根据种类找到所有的老师
+ * type: 查询的两种方式 group: 名字
+ * position: 职位 department: 学院
+ * @param ctx
+ */
+export async function getTeacherGroup(ctx: Context) {
+  let group: string = ctx.request.body.group;
+  let type: string = ctx.request.body.type;
+  console.log(ctx.request.body);
+  if (type === "position") {
+    let res = await db.User.findAll({ where: { position: group } });
+    console.log(res);
+    ctx.response.body = res;
+  } else if (type === "department") {
+    let res = await db.User.findAll({ where: { department: group } });
+    ctx.response.body = res;
+  } else {
+    ctx.response.status = 404;
+  }
+}

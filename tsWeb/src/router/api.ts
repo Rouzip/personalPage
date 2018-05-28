@@ -4,7 +4,8 @@ import {
   reNamePic,
   teacherInfos,
   viewPeopleNum,
-  teacherInfo
+  teacherInfo,
+  getTeacherGroup
 } from "../controller/apiController";
 
 const router = new Router();
@@ -24,5 +25,6 @@ router.post(
 router.get("/teachers", teacherInfos);
 router.post("/teacher", teacherInfo);
 router.get("/peoples", viewPeopleNum);
+router.post("/teachergroup", getTeacherGroup);
 
 export { router };

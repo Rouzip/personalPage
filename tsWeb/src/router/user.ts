@@ -10,7 +10,7 @@ const router = new Router();
 
 router.post("/login", loginTest);
 router.get("/logout", logout);
-router.post("/sigup", signUp);
+router.post("/signup", signUp);
 router.post("/modify", modifyInfo);
 
 export { router };

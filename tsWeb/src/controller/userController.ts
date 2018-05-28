@@ -79,29 +79,46 @@ export async function logout(ctx: Context) {
   ctx.cookies.set("uuid", "");
 }
 
+/**
+ * 从前端读取数据，并为其创建唯一uuid
+ * 需要保证数据库中的电话不重复
+ * @param ctx
+ */
 export async function signUp(ctx: Context) {
-  // 从前端读取数据，并为其创建唯一uuid
-  let usrName: string = ctx.request.body.usrName;
-  let pwd: string = ctx.request.body.pwd;
   let tel: string = ctx.request.body.tel;
-  let id: string = guid();
-  let data = {
-    id: id,
-    name: usrName,
-    password: pwd,
-    telephone: tel,
-    position: "",
-    email: "",
-    introduce: "",
-    department: "",
-    picture: "",
-    degree: ""
-  };
-  // 将用户数据装载进数据库
-  try {
-    await db.User.create(data);
+  if (tel.length !== 11) {
     ctx.response.body = { success: false };
-  } catch (error) {
+    return;
+  }
+  let infos = await db.User.findAll({ where: { telephone: tel } });
+  // 是否存在
+  let exist = infos.length !== 0;
+  if (!exist) {
+    let usrName: string = ctx.request.body.usrName;
+    let pwd: string = ctx.request.body.pwd;
+    let id: string = guid();
+    let data = {
+      id: id,
+      name: usrName,
+      password: pwd,
+      telephone: tel,
+      position: "",
+      email: "",
+      introduce: "",
+      department: "",
+      picture: "",
+      degree: ""
+    };
+    // 将用户数据装载进数据库
+    try {
+      await db.User.create(data);
+      ctx.response.body = { success: true };
+    } catch (error) {
+      console.log(error);
+      ctx.response.body = { success: false };
+    }
+  } else {
+    console.log(123);
     ctx.response.body = { success: false };
   }
 }
