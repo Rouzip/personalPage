@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <el-container>
+    <el-container style="height: 100%;">
       <el-header style="height: 101px; padding: 0;">
         <nav-header class="nav-header"> </nav-header>
       </el-header>
-      <el-main style="padding:0;">
+      <el-main style="padding:0; flex:8;">
         <router-view class="main-show"></router-view>
       </el-main>
       <el-footer class="foot"> 浏览人数 {{ watchNum }} &nbsp;&nbsp;&nbsp;Right:Rouzip </el-footer>
@@ -30,7 +30,7 @@ export default {
   // 此处只是为了模拟转换
   created: async function() {
     await this.getViewNum();
-    this.$router.push("/showbanner");
+    this.$router.push("/index");
   },
   methods: {
     // 计算浏览人数
@@ -50,6 +50,9 @@ export default {
 </script>
   
 <style scoped>
+#app {
+  height: 100%;
+}
 .main-show {
   width: 100%;
   padding: 0;
@@ -57,5 +60,6 @@ export default {
 .foot {
   background: #b8b5b5;
   text-align: center;
+  flex: 0.5;
 }
 </style>

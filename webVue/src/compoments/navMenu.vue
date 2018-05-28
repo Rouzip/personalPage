@@ -82,20 +82,21 @@
             <el-input
               placeholder="请输入用户名"
               suffix-icon="el-icon-tickets"
-              v-model="tel"
+              v-model="user"
               clearable
               style="margin-top:10%; margin-bottom:10%;">
             </el-input>
             <el-input
               placeholder="请输入电话"
               suffix-icon="el-icon-edit"
-              v-model="tel"
+              v-model="telSign"
               clearable>
             </el-input>
             <!-- 按钮的居中使用了div进行包装text-align进行居中 -->
             <div class="submit-button">
               <el-button
-              type="primary">
+              type="primary"
+              @click="signUp">
                 注册
               </el-button>
             </div>
@@ -115,6 +116,7 @@ export default {
       tel: "",
       pwd: "",
       user: "",
+      telSign: "",
       activeName: "first",
       dialogOpen: false, // 此处用于登录
       dialogDep: false, // 此处用于学院列表
@@ -196,6 +198,7 @@ export default {
           message: "密码错误",
           type: "error"
         });
+        this.pwd = "";
       }
     },
     async logout() {
@@ -208,7 +211,41 @@ export default {
         });
         this.$store.commit("reverseState");
       } else {
-        this.$router.push("/showbanner");
+        this.$router.push("/index");
+      }
+    },
+    async signUp() {
+      if (this.telSign.length !== 11) {
+        this.$message({
+          showClose: true,
+          message: "手机号无效",
+          type: "error"
+        });
+        return;
+      }
+      let resp = await this.$http.post(
+        "/user/signup",
+        qs.stringify({
+          usrName: this.user,
+          tel: this.telSign
+        })
+      );
+      let success = resp.data.success;
+      if (success === true) {
+        this.$message({
+          showClose: true,
+          message: "注册成功",
+          type: "success"
+        });
+        this.dialogOpen = false;
+        this.user = "";
+        this.telSign = "";
+      } else {
+        this.$message({
+          showClose: true,
+          message: "此手机已用于注册或手机号无效",
+          type: "error"
+        });
       }
     }
   },

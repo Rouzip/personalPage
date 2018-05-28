@@ -1,6 +1,6 @@
 <template>
   <div class="banner">
-    <el-carousel height="479px" @change="addIndex">
+    <el-carousel height="488px" @change="addIndex">
       <el-carousel-item v-for="index in 3" 
                         :key="index" 
                         :style="styleItem(index)" 
@@ -117,6 +117,7 @@ export default {
 <style scoped>
 .banner {
   background-repeat: no-repeat;
+  height: 100%;
 }
 .pictures {
   display: flex;

@@ -141,9 +141,8 @@ export default {
 .boarder {
   display: -webkit-flex;
   display: flex;
-  /* justify-content: flex-start; */
   flex-wrap: nowrap;
-  height: 479px;
+  height: 100%;
   overflow: hidden;
 }
 .aside-board {
@@ -151,7 +150,6 @@ export default {
   /* http://justcode.ikeepstudying.com/2015/10/css3-flexbox%E8%BD%BB%E6%9D%BE%E5%AE%9E%E7%8E%B0%E5%85%83%E7%B4%A0%E7%9A%84%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD%E5%92%8C%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD/ */
   align-items: center;
   flex-direction: column;
-  /* flex-wrap: wrap; */
   justify-content: center;
   display: flex;
   flex: 1;
