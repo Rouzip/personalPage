@@ -62,13 +62,23 @@
               clearable
               style="margin-top:10%; margin-bottom:10%;">
             </el-input>
-            <el-input
-              placeholder="请输入密码"
-              suffix-icon="el-icon-edit"
-              v-model="pwd"
-              type="password"
-              clearable>
-            </el-input>
+            <div class="captcha">
+              <el-input
+                placeholder="请输入验证码"
+                suffix-icon="el-icon-edit"
+                v-model="pwd"
+                type="password"
+                clearable>
+              </el-input>
+              <el-button
+              type=primary
+              style="margin-right: 1vh; margin-left: 1vh;"
+              @click="captcha"
+              :disabled="disableCaptcha">
+                <span v-show="!disableCaptcha">验证码</span>
+                <span v-show="disableCaptcha">{{ time+'s' }}</span>
+              </el-button>
+            </div>
             <!-- 按钮的居中使用了div进行包装text-align进行居中 -->
             <div class="submit-button">
               <el-button
@@ -109,6 +119,7 @@
 
 <script>
 import qs from "qs";
+import { setTimeout } from "timers";
 
 export default {
   data() {
@@ -118,6 +129,8 @@ export default {
       user: "",
       telSign: "",
       activeName: "first",
+      time: 60, // 倒计时计算
+      disableCaptcha: false, // 验证码按钮是否允许被按下
       dialogOpen: false, // 此处用于登录
       dialogDep: false, // 此处用于学院列表
       note: {
@@ -175,6 +188,15 @@ export default {
       this.$router.push("/board/" + "position" + "/" + position);
     },
     async login() {
+      // 判断电话号码的合法性
+      if (this.tel.length < 11) {
+        this.$message({
+          showClose: true,
+          message: "请输入正确的电话号码",
+          type: "error"
+        });
+        return;
+      }
       let res = await this.$http.post(
         "/user/login",
         qs.stringify({
@@ -192,13 +214,47 @@ export default {
         });
         this.tel = "";
         this.pwd = "";
+        this.$router.push("/infos/" + res.data.id);
       } else {
         this.$message({
           showClose: true,
-          message: "密码错误",
+          message: "密码错误或用户不存在",
           type: "error"
         });
         this.pwd = "";
+      }
+    },
+    async captcha() {
+      if (this.tel.length < 11) {
+        this.$message({
+          showClose: true,
+          message: "请输入正确的电话号码",
+          type: "error"
+        });
+        return;
+      }
+      let resp = await this.$http.post(
+        "/api/captcha",
+        qs.stringify({ tel: this.tel })
+      );
+      if (resp.data.exist === true) {
+        this.disableCaptcha = true;
+        this.timer();
+      } else {
+        this.$message({
+          showClose: true,
+          message: "电话号码不正确",
+          type: "error"
+        });
+      }
+    },
+    timer() {
+      if (this.time > 1) {
+        this.time--;
+        setTimeout(this.timer, 1000);
+      } else {
+        this.time = 60;
+        this.disableCaptcha = false;
       }
     },
     async logout() {
@@ -313,6 +369,9 @@ export default {
   /* flex: 20%; */
   width: 25%;
   margin: 1vh 1vh 1vh 0;
+}
+.captcha {
+  display: flex;
 }
 h1 {
   margin: 0;
