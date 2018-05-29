@@ -5,7 +5,8 @@ import {
   teacherInfos,
   viewPeopleNum,
   teacherInfo,
-  getTeacherGroup
+  getTeacherGroup,
+  captchaControl
 } from "../controller/apiController";
 
 const router = new Router();
@@ -26,5 +27,6 @@ router.get("/teachers", teacherInfos);
 router.post("/teacher", teacherInfo);
 router.get("/peoples", viewPeopleNum);
 router.post("/teachergroup", getTeacherGroup);
+router.post("/captcha", captchaControl);
 
 export { router };

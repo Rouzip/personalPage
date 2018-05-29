@@ -3,31 +3,41 @@ import { Context } from "koa";
 import db from "../model";
 import { loginResp } from "./response";
 import { UserInstance, UserAttributes } from "../model/model";
-import { guid, userMap } from "./tool";
+import { guid, userMap, captchaMap } from "./tool";
 
 /**
- * 用来判断用户是否存在
- * @param pwd 用户密码
- * @returns 判断用户的结果 boolean
+ * 用户使用短信验证码来登陆
+ * @param ctx
  */
-async function checkPwd(
-  pwd: string,
-  user: UserInstance | null
-): Promise<boolean> {
-  try {
-    // 如果没有该用户，返回错误
-    if (user === null) {
-      return false;
+export async function login(ctx: Context) {
+  let tel = ctx.request.body.tel;
+  let pwd = ctx.request.body.pwd;
+  let captcha = captchaMap.get(tel);
+  let user: UserInstance | null = await db.User.findOne({
+    where: {
+      telephone: tel
     }
-    // 如果用户密码错误
-    if (user.password !== pwd) {
-      return false;
-    }
-  } catch (error) {
-    console.log(error);
-    return false;
+  });
+  // FIXME: delete the console
+  console.log(captchaMap, "查看映射关系");
+  let response: loginResp;
+  // 验证码通过且后端找到了该用户
+  if (captcha === pwd && user !== null) {
+    let cookie = guid();
+    // 存储在变量中
+    userMap.set(cookie, user.id);
+    response = {
+      exist: true,
+      id: user.id
+    };
+    // 将此期间使用的uuid设置在cookie中，方便下次登录
+    ctx.cookies.set("uuid", cookie);
+  } else {
+    response = {
+      exist: false
+    };
   }
-  return true;
+  ctx.response.body = response;
 }
 
 /**
@@ -44,8 +54,7 @@ export async function loginTest(ctx: Context) {
         telephone: tel
       }
     });
-    let pwd: string = ctx.request.body.pwd;
-    let exist: boolean = await checkPwd(pwd, user);
+    let exist: boolean = true;
     let response: loginResp;
     if (exist && user !== null) {
       let cookie = guid();
@@ -95,12 +104,10 @@ export async function signUp(ctx: Context) {
   let exist = infos.length !== 0;
   if (!exist) {
     let usrName: string = ctx.request.body.usrName;
-    let pwd: string = ctx.request.body.pwd;
     let id: string = guid();
     let data = {
       id: id,
       name: usrName,
-      password: pwd,
       telephone: tel,
       position: "",
       email: "",
@@ -118,7 +125,6 @@ export async function signUp(ctx: Context) {
       ctx.response.body = { success: false };
     }
   } else {
-    console.log(123);
     ctx.response.body = { success: false };
   }
 }

@@ -10,6 +10,7 @@
     "author": "Rouzip",
     "license": "ISC",
     "dependencies": {
+        "@types/axios": "^0.14.0",
         "@types/busboy": "^0.2.3",
         "@types/ejs": "^2.5.1",
         "@types/koa": "^2.0.45",
@@ -19,6 +20,7 @@
         "@types/koa-router": "^7.0.28",
         "@types/koa-static": "^4.0.0",
         "@types/koa-views": "^2.0.3",
+        "@types/qs": "^6.5.1",
         "@types/sequelize": "^4.27.17",
         "axios": "^0.18.0",
         "busboy": "^0.2.14",

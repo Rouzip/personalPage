@@ -1,6 +1,7 @@
 /// <reference path="./model.d.ts" />
 
 import Sequelize from "sequelize";
+
 import config from "../config";
 import { UserInstance, UserAttributes } from "./model";
 
@@ -28,10 +29,6 @@ let User = sequelize.define<UserInstance, UserAttributes>(
       primaryKey: true
     },
     name: Sequelize.STRING,
-    password: {
-      allowNull: false,
-      type: Sequelize.STRING
-    },
     telephone: {
       allowNull: false,
       type: Sequelize.STRING

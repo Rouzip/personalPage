@@ -1,6 +1,11 @@
 import fs from "fs";
+
+import axios from "axios";
+import qs from "qs";
+
 import db from "../model";
 import { UserInstance } from "../model/model";
+import config from "../config";
 
 /**
  * 自定义函数创建uuid
@@ -25,6 +30,13 @@ export function guid() {
     s4() +
     s4()
   );
+}
+
+/**
+ * 生成四位随机数
+ */
+export function randCaptcha() {
+  return Math.floor(Math.random() * (9999 - 1000)) + 1000;
 }
 
 /**
@@ -92,4 +104,27 @@ export async function loadPic(name: string) {
     if (data !== undefined) {
     }
   });
+}
+
+/**
+ * 用户手机号码与验证码的对应
+ * {telephone: cpatcha}
+ */
+export let captchaMap: Map<string, string> = new Map<string, string>();
+
+/**
+ * 异步调用云片网的api，发送验证码短信
+ * @param tel 手机号码
+ * @param cpatcha 验证码
+ */
+export async function sendCaptcha(tel: string, captcha: string) {
+  let message = `【Rouzip的家】您的验证码是${captcha}。如非本人操作，请忽略本短信`;
+  await axios.post(
+    "https://sms.yunpian.com/v2/sms/single_send.json",
+    qs.stringify({
+      apikey: config.apikey,
+      mobile: tel,
+      text: message
+    })
+  );
 }

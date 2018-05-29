@@ -1,7 +1,7 @@
 import Router from "koa-router";
+
 import { router as apiRouter } from "./api";
 import { router as usrRouter } from "./user";
-
 
 let router = new Router();
 router.get("/", async (ctx, next) => {

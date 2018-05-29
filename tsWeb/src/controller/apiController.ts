@@ -1,7 +1,14 @@
 import { Context } from "koa";
 import db from "../model";
 import { UserAttributes, UserInstance } from "../model/model";
-import { loadPic, reName, userMap } from "./tool";
+import {
+  loadPic,
+  reName,
+  userMap,
+  randCaptcha,
+  captchaMap,
+  sendCaptcha
+} from "./tool";
 
 /**
  * 将tmp文件重命名为用户id图片
@@ -74,5 +81,27 @@ export async function getTeacherGroup(ctx: Context) {
     ctx.response.body = res;
   } else {
     ctx.response.status = 404;
+  }
+}
+
+export async function captchaControl(ctx: Context) {
+  let tel: string = ctx.request.body.tel;
+  let captcha: string = randCaptcha() + "";
+  let user: UserInstance | null = await db.User.findOne({
+    where: {
+      telephone: tel
+    }
+  });
+  if (user !== null) {
+    captchaMap.set(tel, captcha);
+    ctx.response.body = { exist: true };
+    console.log("验证码：", captcha);
+    // 验证码两分钟有效
+    // await sendCaptcha(tel, captcha);
+    setTimeout(_ => {
+      captchaMap.delete(tel);
+    }, 1000 * 60);
+  } else {
+    ctx.response.body = { exist: false };
   }
 }

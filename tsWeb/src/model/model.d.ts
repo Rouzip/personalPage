@@ -2,10 +2,9 @@ import db from "./index";
 import Sequelize from "sequelize";
 
 export interface UserAttributes {
-  id:string;
+  id: string;
 
   name: string;
-  password: string;
   telephone: string;
   position: string;
   email: string;
@@ -15,11 +14,10 @@ export interface UserAttributes {
   degree: string;
 }
 
-export interface UserInstance extends Sequelize.Instance < UserAttributes >{
+export interface UserInstance extends Sequelize.Instance<UserAttributes> {
   id: string;
 
   name: string;
-  password: string;
   telephone: string;
   position: string;
   email: string;
