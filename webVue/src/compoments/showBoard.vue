@@ -2,7 +2,7 @@
   <div class="board">
     <div class="items">
       <div class="item" v-for="teacher in items" :key="teacher.id" @click="jumpTeacher(teacher.id)">
-        <img :src="'/static/'+teacher.picture" class="avatar">
+        <img :src="getImageURL(teacher.picture)" class="avatar">
         <div class="infos">
           <div class="info">{{ '姓名：'+teacher.name }}</div>
           <div class="info">{{ '学位：'+teacher.degree }}</div>
@@ -36,11 +36,13 @@ export default {
             group: group
           })
         );
-        console.log();
         this.items = res.data;
       } catch (error) {
         console.log(error);
       }
+    },
+    getImageURL(url) {
+      return "/" + url;
     },
     jumpTeacher(id) {
       this.$router.push({ path: `/infos/${id}` });

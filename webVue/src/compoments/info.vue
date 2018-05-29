@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <el-carousel height="488px" @change="addIndex">
-      <el-carousel-item v-for="index in 3" 
+      <el-carousel-item v-for="index in 5" 
                         :key="index" 
                         :style="styleItem(index)" 
                         autoplay
@@ -15,7 +15,7 @@
             :key="index"
             v-show="showArray[index-1]">
         <!-- 使用一个boolean的数组来判断是否展示这个item，用pictureIndex来记录展示的3个索引 -->
-        <img :src="'/static/'+teacherInfo(index-1, 'picture')" 
+        <img :src="teacherInfo(index-1, 'picture')" 
               alt="教师图片"
               class="avatar" 
               @click="jumpPersonPage(teacherInfo(index-1, 'id'))">

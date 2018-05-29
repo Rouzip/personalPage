@@ -46,7 +46,7 @@ import qs from "qs";
 export default {
   data: function() {
     return {
-      pictureURL: "/static/",
+      pictureURL: "/",
       teacher: {},
       imageUrl: "", // 用来上传到的图片的url
       tel: "",
@@ -60,7 +60,6 @@ export default {
   methods: {
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
-      console.log("url is:", this.imageUrl);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
@@ -113,7 +112,7 @@ export default {
       return this.$store.state.isLog;
     }
   },
-  async created() {
+  async mounted() {
     // 获取到现在教师的id
     try {
       let id = this.$router.currentRoute.params.id;
