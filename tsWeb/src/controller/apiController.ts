@@ -96,8 +96,13 @@ export async function captchaControl(ctx: Context) {
     captchaMap.set(tel, captcha);
     ctx.response.body = { exist: true };
     console.log("验证码：", captcha);
-    // 验证码两分钟有效
-    // await sendCaptcha(tel, captcha);
+    // 发送验证码，为了防止后端成为延时，加入到任务队列当中去
+    setTimeout(_ => {
+      sendCaptcha(tel, captcha).catch(err => {
+        console.log(err);
+      });
+    }, 0);
+    // 验证码一分钟有效
     setTimeout(_ => {
       captchaMap.delete(tel);
     }, 1000 * 60);

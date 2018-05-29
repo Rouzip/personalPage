@@ -18,14 +18,13 @@ export async function login(ctx: Context) {
       telephone: tel
     }
   });
-  // FIXME: delete the console
-  console.log(captchaMap, "查看映射关系");
   let response: loginResp;
   // 验证码通过且后端找到了该用户
   if (captcha === pwd && user !== null) {
     let cookie = guid();
     // 存储在变量中
     userMap.set(cookie, user.id);
+    console.log("cookie: id", userMap);
     response = {
       exist: true,
       id: user.id
@@ -38,42 +37,6 @@ export async function login(ctx: Context) {
     };
   }
   ctx.response.body = response;
-}
-
-/**
- * 检查用户发送的用户名与密码，返回数据
- * @TODO: 此段只适用于开发检测，成品需要使用短信登录
- * @param ctx {usrName: string, pwd: string}
- */
-export async function loginTest(ctx: Context) {
-  try {
-    let tel: string = ctx.request.body.tel;
-    // 找到用户是否存在
-    let user: UserInstance | null = await db.User.findOne({
-      where: {
-        telephone: tel
-      }
-    });
-    let exist: boolean = true;
-    let response: loginResp;
-    if (exist && user !== null) {
-      let cookie = guid();
-      // 存储在变量中
-      userMap.set(cookie, user.id);
-      response = {
-        exist: true
-      };
-      // 将此期间使用的uuid设置在cookie中，方便下次登录
-      ctx.cookies.set("uuid", cookie);
-    } else {
-      response = {
-        exist: false
-      };
-    }
-    ctx.response.body = response;
-  } catch (error) {
-    console.log(error);
-  }
 }
 
 /**
