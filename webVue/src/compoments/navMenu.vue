@@ -214,6 +214,7 @@ export default {
         });
         this.tel = "";
         this.pwd = "";
+        console.log(res.data.id);
         this.$router.push("/infos/" + res.data.id);
       } else {
         this.$message({

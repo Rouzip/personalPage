@@ -116,10 +116,12 @@ export default {
     // 获取到现在教师的id
     try {
       let id = this.$router.currentRoute.params.id;
+      console.log(id);
       let response = await this.$http.post(
         "/api/teacher",
         qs.stringify({ id: id })
       );
+      console.log(response.data);
       this.teacher = response.data;
       this.pictureURL += this.teacher.picture;
 
