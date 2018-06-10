@@ -69,7 +69,7 @@ tsweb/src/static
 # sql data
 tsWeb/src/model/test.sql
 # config
-tsWeb/src/config
+tsWeb/src/config/index.ts
 
 # 前端部分
 .DS_Store
