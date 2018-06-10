@@ -88,7 +88,6 @@ export async function reName(file: any, id: string): Promise<void> {
     });
   } catch (error) {
     console.log(error);
-    console.log(123);
   }
 }
 

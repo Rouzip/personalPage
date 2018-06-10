@@ -7,6 +7,8 @@ import { guid, userMap, captchaMap } from "./tool";
 
 /**
  * 用户使用短信验证码来登陆
+ * tel: 用户的手机号码，需要验证是否真实在数据库中
+ * pwd: 向服务器传入的验证码
  * @param ctx
  */
 export async function login(ctx: Context) {
@@ -24,7 +26,6 @@ export async function login(ctx: Context) {
     let cookie = guid();
     // 存储在变量中
     userMap.set(cookie, user.id);
-    console.log("cookie: id", userMap);
     response = {
       exist: true,
       id: user.id
@@ -54,6 +55,7 @@ export async function logout(ctx: Context) {
 /**
  * 从前端读取数据，并为其创建唯一uuid
  * 需要保证数据库中的电话不重复
+ * tel: 注册的电话号码，需要验证合法性
  * @param ctx
  */
 export async function signUp(ctx: Context) {
@@ -94,6 +96,7 @@ export async function signUp(ctx: Context) {
 
 /**
  * 用户用来修改自己的信息，更新全部的信息
+ * id： 用户的id，根据此查询数据库中自己信息
  * @param ctx
  */
 export async function modifyInfo(ctx: Context): Promise<void> {

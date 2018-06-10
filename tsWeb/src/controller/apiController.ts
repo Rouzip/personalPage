@@ -12,6 +12,7 @@ import {
 
 /**
  * 将tmp文件重命名为用户id图片
+ * file: 用户的id，用于构建cookie和user的映射
  * @param ctx
  */
 export async function reNamePic(ctx: Context): Promise<void> {
@@ -19,8 +20,6 @@ export async function reNamePic(ctx: Context): Promise<void> {
   let file: any = ctx.request.body.files.file;
   let cookie: string = ctx.cookies.get("uuid");
   let id = userMap.get(cookie) || "";
-  console.log(userMap);
-  console.log("id:", id);
   await reName(file, id);
   ctx.response.status = 200;
 }
@@ -34,6 +33,11 @@ export async function teacherInfos(ctx: Context): Promise<void> {
   ctx.response.body = teachers;
 }
 
+/**
+ * 获取单个教师的信息
+ * id: 查询老师的id
+ * @param ctx
+ */
 export async function teacherInfo(ctx: Context): Promise<void> {
   let id: string = ctx.request.body.id;
   try {
@@ -71,10 +75,8 @@ export function viewPeopleNum(ctx: Context): void {
 export async function getTeacherGroup(ctx: Context) {
   let group: string = ctx.request.body.group;
   let type: string = ctx.request.body.type;
-  console.log(ctx.request.body);
   if (type === "position") {
     let res = await db.User.findAll({ where: { position: group } });
-    console.log(res);
     ctx.response.body = res;
   } else if (type === "department") {
     let res = await db.User.findAll({ where: { department: group } });
@@ -84,6 +86,12 @@ export async function getTeacherGroup(ctx: Context) {
   }
 }
 
+/**
+ * 使用云片网api发送验证码
+ * tel: 用户的手机号码，向api发送的参数之一
+ * captcha: 服务器生成的验证码，存储后与tel对应验证登陆
+ * @param ctx
+ */
 export async function captchaControl(ctx: Context) {
   let tel: string = ctx.request.body.tel;
   let captcha: string = randCaptcha() + "";
